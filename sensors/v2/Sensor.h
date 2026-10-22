@@ -167,7 +167,14 @@ class DoubleTapSensor : public SysfsPollingOneShotSensor {
     DoubleTapSensor(int32_t sensorHandle, ISensorsEventCallback* callback)
         : SysfsPollingOneShotSensor(
               sensorHandle, callback, GetPollPath(doubleTapPaths),
-              GetPollPath(doubleTapPathsEnable), "Double Tap Sensor", "co.aospa.sensor.double_tap",
+#ifdef DOUBLE_TAP_SENSOR_SKIP_ENABLE
+              // The device keeps the gesture armed: some touch drivers only apply gestures
+              // when the panel suspends, which happens before doze registers this sensor.
+              "",
+#else
+              GetPollPath(doubleTapPathsEnable),
+#endif
+              "Double Tap Sensor", "co.aospa.sensor.double_tap",
               static_cast<SensorType>(static_cast<int32_t>(SensorType::DEVICE_PRIVATE_BASE) + 3)) {}
 };
 #endif

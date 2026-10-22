@@ -283,6 +283,12 @@ void SysfsPollingOneShotSensor::activate(bool enable, bool notify, bool lock) {
     }
 
     if (mIsEnabled != enable) {
+        if (enable && mPollFd >= 0) {
+            // Drivers can notify the state node while the sensor is off (e.g. a double
+            // tap reported with the screen on). Read it to drop that stale event, or the
+            // first poll returns right away and the sensor fires without a gesture.
+            readBool(mPollFd, true /* seek */);
+        }
 
         writeEnable(enable);
 
