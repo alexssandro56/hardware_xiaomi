@@ -14,6 +14,10 @@ soong_config_module_type {
         "DOUBLE_TAP_SENSOR_SKIP_ENABLE",
         "USES_SINGLE_TAP_SENSOR",
     ],
+    value_variables: [
+        "DOUBLE_TAP_SENSOR_X",
+        "DOUBLE_TAP_SENSOR_Y",
+    ],
     properties: ["cppflags"],
 }
 
@@ -31,6 +35,12 @@ sensors_xiaomi_cc_defaults {
         },
         USES_SINGLE_TAP_SENSOR: {
             cppflags: ["-DUSES_SINGLE_TAP_SENSOR"],
+        },
+        DOUBLE_TAP_SENSOR_X: {
+            cppflags: ["-DDOUBLE_TAP_SENSOR_X=%s"],
+        },
+        DOUBLE_TAP_SENSOR_Y: {
+            cppflags: ["-DDOUBLE_TAP_SENSOR_Y=%s"],
         },
     },
 }

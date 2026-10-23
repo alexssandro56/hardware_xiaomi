@@ -176,6 +176,15 @@ class DoubleTapSensor : public SysfsPollingOneShotSensor {
 #endif
               "Double Tap Sensor", "co.aospa.sensor.double_tap",
               static_cast<SensorType>(static_cast<int32_t>(SensorType::DEVICE_PRIVATE_BASE) + 3)) {}
+
+#if defined(DOUBLE_TAP_SENSOR_X) && defined(DOUBLE_TAP_SENSOR_Y)
+    // The touch driver does not report where the tap landed, so hand SystemUI a fixed
+    // point to start the wake-up reveal from.
+    virtual void fillEventData(Event& event) override {
+        event.u.data[0] = DOUBLE_TAP_SENSOR_X;
+        event.u.data[1] = DOUBLE_TAP_SENSOR_Y;
+    }
+#endif
 };
 #endif
 
